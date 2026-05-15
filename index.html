@@ -4,37 +4,69 @@
 <meta charset="UTF-8">
 <title>Bingo</title>
 
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+<link href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;700&display=swap" rel="stylesheet">
+
 <style>
 
 body{
     background:#111;
     color:white;
+    font-family:'Lexend', sans-serif;
     text-align:center;
-    font-family:Arial;
-}
-
-h1{
-    font-size:50px;
-}
-
-#ultimo{
-    font-size:140px;
-    margin-top:30px;
-    color:yellow;
-}
-
-#lista{
-    margin-top:40px;
-    font-size:32px;
+    margin:0;
     padding:20px;
 }
 
-.numero{
-    display:inline-block;
-    margin:5px;
-    padding:10px 15px;
+h1{
+    font-size:64px;
+    margin-bottom:30px;
+}
+
+#ultimo{
+    font-size:120px;
+    color:#00ff00;
+    margin-bottom:40px;
+}
+
+table{
+    margin:auto;
+    border-collapse:collapse;
+}
+
+td{
+
+    width:60px;
+    height:60px;
+
+    border:2px solid #333;
+
+    font-size:28px;
+
+    text-align:center;
+
+    background:#1a1a1a;
+
+    transition:0.2s;
+}
+
+.letra{
+
     background:#222;
-    border-radius:10px;
+    color:#00ff00;
+    font-weight:bold;
+    font-size:40px;
+}
+
+.chamado{
+
+    background:#00ff00;
+    color:black;
+    font-weight:bold;
+
+    box-shadow:0 0 20px #00ff00;
 }
 
 </style>
@@ -46,40 +78,104 @@ h1{
 
 <div id="ultimo">-</div>
 
-<div id="lista"></div>
+<table id="tabela"></table>
 
 <script>
 
-const API = "https://script.google.com/macros/s/AKfycby0Uikq13M55pMSJ7JFodsqOyT4XnZc1ucYeJrJexGf1Rt8JG-j-XL3IKesEbsHwqU-Ew/exec";
+const API = "COLE_TUA_URL_AQUI";
+
+function gerarTabela(chamados){
+
+    const tabela = document.getElementById("tabela");
+
+    tabela.innerHTML = "";
+
+    const letras = ["B","I","N","G","O"];
+
+    let inicio = 1;
+
+    for(let l = 0; l < letras.length; l++){
+
+        for(let linha = 0; linha < 2; linha++){
+
+            const tr = document.createElement("tr");
+
+            if(linha === 0){
+
+                const letra = document.createElement("td");
+
+                letra.className = "letra";
+
+                letra.innerText = letras[l];
+
+                tr.appendChild(letra);
+
+            }else{
+
+                const vazio = document.createElement("td");
+
+                vazio.className = "letra";
+
+                vazio.innerText = "";
+
+                tr.appendChild(vazio);
+            }
+
+            for(let i = 0; i < 8; i++){
+
+                const td = document.createElement("td");
+
+                let numero;
+
+                if(linha === 0){
+
+                    numero = inicio + (i * 2);
+
+                }else{
+
+                    numero = inicio + 1 + (i * 2);
+
+                }
+
+                if(numero <= inicio + 14){
+
+                    td.innerText = numero;
+
+                    if(chamados.includes(numero)){
+
+                        td.classList.add("chamado");
+                    }
+                }
+
+                tr.appendChild(td);
+            }
+
+            tabela.appendChild(tr);
+        }
+
+        inicio += 15;
+    }
+}
 
 async function atualizar(){
 
     try{
 
         const res = await fetch(API);
-        const nums = await res.json();
 
-        if(nums.length > 0){
+        const chamados = await res.json();
+
+        if(chamados.length > 0){
 
             document.getElementById("ultimo").innerText =
-                nums[nums.length - 1];
-
+                chamados[chamados.length - 1];
         }
 
-        let html = "";
-
-        nums.forEach(n => {
-
-            html += `<span class="numero">${n}</span>`;
-
-        });
-
-        document.getElementById("lista").innerHTML = html;
+        gerarTabela(chamados);
 
     }catch(e){
 
         console.log(e);
-
     }
 }
 

@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Bingo</title>
+
+<style>
+
+body{
+    background:#111;
+    color:white;
+    text-align:center;
+    font-family:Arial;
+}
+
+h1{
+    font-size:50px;
+}
+
+#ultimo{
+    font-size:140px;
+    margin-top:30px;
+    color:yellow;
+}
+
+#lista{
+    margin-top:40px;
+    font-size:32px;
+    padding:20px;
+}
+
+.numero{
+    display:inline-block;
+    margin:5px;
+    padding:10px 15px;
+    background:#222;
+    border-radius:10px;
+}
+
+</style>
+</head>
+
+<body>
+
+<h1>BINGO</h1>
+
+<div id="ultimo">-</div>
+
+<div id="lista"></div>
+
+<script>
+
+const API = "https://script.google.com/macros/s/AKfycbz0QjPSGGT2eBJldfOQl07pIdAaeY8MGjwuTKxM0dKPMgdgswp4L2T0t3Cu5Wh_AxJUpQ/exec";
+
+async function atualizar(){
+
+    try{
+
+        const res = await fetch(API);
+        const nums = await res.json();
+
+        if(nums.length > 0){
+
+            document.getElementById("ultimo").innerText =
+                nums[nums.length - 1];
+
+        }
+
+        let html = "";
+
+        nums.forEach(n => {
+
+            html += `<span class="numero">${n}</span>`;
+
+        });
+
+        document.getElementById("lista").innerHTML = html;
+
+    }catch(e){
+
+        console.log(e);
+
+    }
+}
+
+atualizar();
+
+setInterval(atualizar, 2000);
+
+</script>
+
+</body>
+</html>

@@ -125,6 +125,8 @@ td{
     font-weight:bold;
 
     padding:0;
+
+    color:white;
 }
 
 .letra{
@@ -153,23 +155,38 @@ td{
 @keyframes piscar{
 
     0%{
-        opacity:1;
+
+        background:var(--verde);
+        color:black;
+        box-shadow:0 0 1vw var(--verde);
     }
 
     49%{
-        opacity:1;
+
+        background:var(--verde);
+        color:black;
+        box-shadow:0 0 1vw var(--verde);
     }
 
     50%{
-        opacity:0;
+
+        background:#1a1a1a;
+        color:white;
+        box-shadow:none;
     }
 
     99%{
-        opacity:0;
+
+        background:#1a1a1a;
+        color:white;
+        box-shadow:none;
     }
 
     100%{
-        opacity:1;
+
+        background:var(--verde);
+        color:black;
+        box-shadow:0 0 1vw var(--verde);
     }
 }
 
@@ -183,11 +200,11 @@ td{
 
 <body>
 
-<div id="rodada">Rodada: 1</div>
+<div id="rodada">Rodada: #</div>
 
 <h1>BINGO</h1>
 
-<div id="ultimo">AGUARDANDO</div>
+<div id="ultimo">Aguarde...</div>
 
 <div id="container">
 
@@ -249,6 +266,8 @@ function gerarTabela(chamados){
 
             if(num1 === ultimoNumero){
 
+                td1.classList.remove("chamado");
+
                 td1.classList.add("piscando");
             }
 
@@ -274,6 +293,8 @@ function gerarTabela(chamados){
                 }
 
                 if(num2 === ultimoNumero){
+
+                    td2.classList.remove("chamado");
 
                     td2.classList.add("piscando");
                 }

@@ -145,6 +145,34 @@ td{
     box-shadow:0 0 1vw var(--verde);
 }
 
+.piscando{
+
+    animation:piscar 2s infinite;
+}
+
+@keyframes piscar{
+
+    0%{
+        opacity:1;
+    }
+
+    49%{
+        opacity:1;
+    }
+
+    50%{
+        opacity:0;
+    }
+
+    99%{
+        opacity:0;
+    }
+
+    100%{
+        opacity:1;
+    }
+}
+
 .duplo{
 
     height:calc(200% + 0.2vh);
@@ -183,6 +211,11 @@ function gerarTabela(chamados){
 
     let inicio = 1;
 
+    const ultimoNumero =
+        chamados.length > 0
+        ? chamados[chamados.length - 1]
+        : null;
+
     for(let l = 0; l < letras.length; l++){
 
         const tr1 = document.createElement("tr");
@@ -214,6 +247,11 @@ function gerarTabela(chamados){
                 td1.classList.add("chamado");
             }
 
+            if(num1 === ultimoNumero){
+
+                td1.classList.add("piscando");
+            }
+
             if(num1 % 15 === 0){
 
                 td1.rowSpan = 2;
@@ -233,6 +271,11 @@ function gerarTabela(chamados){
                 if(chamados.includes(num2)){
 
                     td2.classList.add("chamado");
+                }
+
+                if(num2 === ultimoNumero){
+
+                    td2.classList.add("piscando");
                 }
 
                 tr2.appendChild(td2);

@@ -218,7 +218,7 @@ const API = "https://script.google.com/macros/s/AKfycbze3zT-MQTlYz4AoZjjt3oqBqs8
 
 const TEXTO_PADRAO = "Nova Rodada";
 
-function gerarTabela(chamados){
+function gerarTabela(chamadosNumeros){
 
     const tabela = document.getElementById("tabela");
 
@@ -229,8 +229,8 @@ function gerarTabela(chamados){
     let inicio = 1;
 
     const ultimoNumero =
-        chamados.length > 0
-        ? chamados[chamados.length - 1]
+        chamadosNumeros.length > 0
+        ? Number(chamadosNumeros[chamadosNumeros.length - 1])
         : null;
 
     for(let l = 0; l < letras.length; l++){
@@ -259,7 +259,7 @@ function gerarTabela(chamados){
 
             td1.innerText = num1;
 
-            if(chamados.includes(num1)){
+            if(chamadosNumeros.includes(num1)){
 
                 td1.classList.add("chamado");
             }
@@ -287,7 +287,7 @@ function gerarTabela(chamados){
 
                 td2.innerText = num2;
 
-                if(chamados.includes(num2)){
+                if(chamadosNumeros.includes(num2)){
 
                     td2.classList.add("chamado");
                 }
@@ -318,15 +318,16 @@ async function atualizar(){
 
         const dados = await res.json();
 
-        const chamados = dados.chamados;
+        const chamadosNumeros =
+            dados.chamados.map(Number);
 
         document.getElementById("rodada").innerText =
             "Rodada: " + dados.rodada;
 
-        if(chamados.length > 0){
+        if(chamadosNumeros.length > 0){
 
             document.getElementById("ultimo").innerText =
-                chamados[chamados.length - 1];
+                chamadosNumeros[chamadosNumeros.length - 1];
 
         }else{
 
@@ -334,7 +335,7 @@ async function atualizar(){
                 TEXTO_PADRAO;
         }
 
-        gerarTabela(chamados);
+        gerarTabela(chamadosNumeros);
 
     }catch(e){
 
